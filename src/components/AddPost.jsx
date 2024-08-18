@@ -5,6 +5,7 @@ import { TextField, Button, Container } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { css } from '@emotion/react';
+import { useGetPostsQuery } from '../store/slices/apiSlice'; // Додайте цей імпорт
 
 const formStyle = css`
   display: flex;
@@ -25,6 +26,7 @@ const buttonStyle = css`
 const AddPost = () => {
     const [addPost] = useAddPostMutation();
     const navigate = useNavigate();
+    const { refetch } = useGetPostsQuery(); // Отримайте refetch
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required!'),
@@ -37,7 +39,9 @@ const AddPost = () => {
                 initialValues={{ title: '', body: '' }}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
-                    await addPost(values);
+                    const response = await addPost(values);
+                    console.log(response);
+                    refetch(); // Викличте refetch після додавання посту
                     navigate('/');
                 }}
             >

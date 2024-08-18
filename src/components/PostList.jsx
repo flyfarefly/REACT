@@ -36,6 +36,8 @@ const PostList = () => {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading posts</div>;
 
+    const filteredPosts = limit < 0 ? [] : posts;
+
     return (
         <Container css={containerStyle}>
             <h1 css={titleStyle}>Post List</h1>
@@ -56,7 +58,7 @@ const PostList = () => {
                 </Button>
             </Link>
             <List>
-                {posts.map((post) => (
+                {filteredPosts.map((post) => (
                     <ListItem key={post.id} css={listItemStyle}>
                         <ListItemText primary={post.title} secondary={post.body} />
                         <div>
