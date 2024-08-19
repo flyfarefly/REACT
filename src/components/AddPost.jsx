@@ -1,32 +1,32 @@
-import React from 'react';
-import { useAddPostMutation } from '../store/slices/apiSlice';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Container } from '@mui/material';
-import { Formik, Form, Field } from 'formik';
+import {useAddPostMutation} from '../store/slices/apiSlice';
+import {useNavigate} from 'react-router-dom';
+import {TextField, Button, Container} from '@mui/material';
+import {Formik, Form, Field} from 'formik';
 import * as Yup from 'yup';
-import { css } from '@emotion/react';
-import { useGetPostsQuery } from '../store/slices/apiSlice'; // Додайте цей імпорт
+import {css} from '@emotion/react';
+import {useGetPostsQuery} from '../store/slices/apiSlice';
+
 
 const formStyle = css`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 400px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
 `;
 
 const titleStyle = css`
-  text-align: center;
+    text-align: center;
 `;
 
 const buttonStyle = css`
-  align-self: center;
+    align-self: center;
 `;
 
 const AddPost = () => {
     const [addPost] = useAddPostMutation();
     const navigate = useNavigate();
-    const { refetch } = useGetPostsQuery(); // Отримайте refetch
+    const {refetch} = useGetPostsQuery();
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required!'),
@@ -36,17 +36,18 @@ const AddPost = () => {
     return (
         <Container>
             <Formik
-                initialValues={{ title: '', body: '' }}
+                initialValues={{title: '', body: ''}}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
                     const response = await addPost(values);
                     console.log(response);
-                    refetch(); // Викличте refetch після додавання посту
+                    refetch(values);
                     navigate('/');
                 }}
             >
-                {({ errors, touched }) => (
+                {({errors, touched}) => (
                     <Form css={formStyle}>
+                        {/* eslint-disable-next-line react/no-unknown-property */}
                         <h1 css={titleStyle}>Add Post</h1>
                         <Field
                             name="title"

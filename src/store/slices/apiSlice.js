@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { API_BASE_URL } from '../../utils/API_CONFIG';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {API_BASE_URL} from '../../utils/API_CONFIG';
 
 export const apiSlice = createApi({
     reducerPath: 'apiSlice',
@@ -18,7 +18,7 @@ export const apiSlice = createApi({
             }),
         }),
         updatePost: builder.mutation({
-            query: ({ id, ...rest }) => ({
+            query: ({id, ...rest}) => ({
                 url: `posts/${id}`,
                 method: 'PUT',
                 body: rest,
@@ -33,4 +33,4 @@ export const apiSlice = createApi({
     }),
 });
 
-export const { useGetPostsQuery, useAddPostMutation, useUpdatePostMutation, useDeletePostMutation } = apiSlice;
+export const {useGetPostsQuery, useAddPostMutation, useUpdatePostMutation, useDeletePostMutation} = apiSlice;

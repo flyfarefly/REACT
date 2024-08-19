@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useGetPostsQuery, useUpdatePostMutation } from '../store/slices/apiSlice';
-import { TextField, Button, Container } from '@mui/material';
-import { Formik, Form, Field } from 'formik';
+import {useEffect} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
+import {useGetPostsQuery, useUpdatePostMutation} from '../store/slices/apiSlice';
+import {TextField, Button, Container} from '@mui/material';
+import {Formik, Form, Field} from 'formik';
 import * as Yup from 'yup';
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 
 const formStyle = css`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 400px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
 `;
 
 const titleStyle = css`
-  text-align: center;
+    text-align: center;
 `;
 
 const buttonStyle = css`
-  align-self: center;
+    align-self: center;
 `;
 
 const EditPost = () => {
-    const { id } = useParams();
-    const { data: posts } = useGetPostsQuery();
+    const {id} = useParams();
+    const {data: posts} = useGetPostsQuery();
     const post = posts?.find((post) => post.id === parseInt(id));
     const [updatePost] = useUpdatePostMutation();
     const navigate = useNavigate();
@@ -49,12 +49,13 @@ const EditPost = () => {
                 }}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
-                    await updatePost({ id: parseInt(id), ...values });
+                    await updatePost({id: parseInt(id), ...values});
                     navigate('/');
                 }}
             >
-                {({ errors, touched }) => (
+                {({errors, touched}) => (
                     <Form css={formStyle}>
+                        {/* eslint-disable-next-line react/no-unknown-property */}
                         <h1 css={titleStyle}>Edit Post</h1>
                         <Field
                             name="title"
