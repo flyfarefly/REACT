@@ -35,7 +35,7 @@ const PostList = () => {
     // Викликайте useGetPostsQuery завжди, але обробляйте дані умовно
     const {data: posts, error, isLoading, refetch} = useGetPostsQuery(limit >= 0 ? limit : undefined);
 
-    if (limit <= 0) {
+    if (limit < 0) {
         return (
             <Container css={containerStyle}>
                 {/* eslint-disable-next-line react/no-unknown-property */}
