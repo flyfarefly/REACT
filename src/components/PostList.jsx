@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {useGetPostsQuery, useDeletePostMutation} from '../store/slices/apiSlice';
 import {Link} from 'react-router-dom';
 import {Button, Container, List, ListItem, ListItemText, TextField} from '@mui/material';
@@ -30,16 +30,36 @@ const listItemStyle = css`
 
 const PostList = () => {
     const [limit, setLimit] = useState('');
-    const {data: posts, error, isLoading, refetch} = useGetPostsQuery(limit || undefined);
     const [deletePost] = useDeletePostMutation();
-    const [allPosts, setAllPosts] = useState([]);
 
-    useEffect(() => {
-        if (posts) {
-            const additionalPosts = [];
-            setAllPosts([...posts, ...additionalPosts]);
-        }
-    }, [posts]);
+    // Викликайте useGetPostsQuery завжди, але обробляйте дані умовно
+    const {data: posts, error, isLoading, refetch} = useGetPostsQuery(limit >= 0 ? limit : undefined);
+
+    if (limit <= 0) {
+        return (
+            <Container css={containerStyle}>
+                {/* eslint-disable-next-line react/no-unknown-property */}
+                <h1 css={titleStyle}>Post List</h1>
+                <TextField
+                    label="Number of posts"
+                    type="number"
+                    value={limit}
+                    onChange={(e) => setLimit(e.target.value)}
+                    variant="outlined"
+                    css={buttonStyle}
+                />
+                <Button variant="contained" color="primary" css={buttonStyle} onClick={refetch}>
+                    Refresh
+                </Button>
+                <Link to="/add">
+                    <Button variant="contained" color="primary" css={buttonStyle}>
+                        Add Post
+                    </Button>
+                </Link>
+                <div>No posts to display</div>
+            </Container>
+        );
+    }
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading posts</div>;
@@ -65,7 +85,7 @@ const PostList = () => {
                 </Button>
             </Link>
             <List>
-                {allPosts.map((post) => (
+                {posts.map((post) => (
                     <ListItem key={post.id} css={listItemStyle}>
                         <ListItemText primary={post.title} secondary={post.body}/>
                         <div>
