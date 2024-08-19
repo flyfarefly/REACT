@@ -32,7 +32,7 @@ const PostList = () => {
     const [limit, setLimit] = useState('');
     const [deletePost] = useDeletePostMutation();
 
-    // Викликайте useGetPostsQuery завжди, але обробляйте дані умовно
+
     const {data: posts, error, isLoading, refetch} = useGetPostsQuery(limit >= 0 ? limit : undefined);
 
     if (limit < 0) {
